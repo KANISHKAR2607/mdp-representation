@@ -18,40 +18,47 @@ To represent any one real-world problem in MDP form.
 
 ### State Space
 
-The state space consists of all possible combinations of the game score and the foul status. Each state is represented by:
+The state space consists of various features that represent the current race situation, including:
 
-> Game Score: The current score of the game.
-<br>
+1.Current lap time.
 
-> Foul Status: Indicates whether a foul has occurred
+2.Tire wear level (e.g., on a scale from 0 to 100)
+
+3.Fuel level (e.g., in liters).
+
 
 ### Sample State
 
-(Game Score = 3, Foul Status = True(1))
+1.Current lap time: 1:30.5
+
+2.Tire wear: 70%
+
+3.Fuel level: 15 liters
 
 ### Action Space
-The action space consists of the following actions:
+The action space includes possible pit stop decisions that the agent can take. Possible actions could be:
 
-1.Provide Score: Update or confirm the game score.
+1.Pit for new tires.
 
-2.Call Foul: Indicate that a foul has occurred.
+2.Stay out on the current tires.
 
-3.Do Nothing: Take no action.
+3.Change fuel strategy (e.g., add more fuel).
 
 ### Sample Action
 
-Call Foul
+Pit for new tires (switch from medium to hard tires).
 
 ### Reward Function
 
-#### Reward of 1: If the umpire calls a foul when a foul has occurred and provides the score.
+#### Reward of 1: Positive reward for improving lap time after a pit stop.
 
-#### Reward of 0: If the umpire either does not provide the score or fails to call a foul when a foul has occurred.
+#### Reward of 0: Negative reward for losing positions due to a pit stop.
 
 ### Graphical Representation
 
 
-![Img](https://github.com/user-attachments/assets/23c283e1-dc60-4a6f-b942-efd0b7d60d66)
+![1](https://github.com/user-attachments/assets/d584df26-c19d-4e92-8106-5a0a3fcb0845)
+
 
 
 
@@ -60,21 +67,25 @@ Call Foul
 ```py
 
 mdp = {
-    0: {  # Initial state with no score and no foul
-        1: [(0.8, 2, 1.0, False)],  # Higher chance of scoring with a foul
-        0: [(1.0, 1, 0.0, False)]  # Guaranteed transition to state 1
+    0: {  # Initial state with specific lap time, tire wear, and fuel level
+        0: [(0.7, 1, -0.1, False)],  # Stay out: slight negative reward for tire wear
+        1: [(0.3, 2, 0.5, False)],  # Pit for new tires: positive reward for improving lap time
+        2: [(0.2, 3, 0.0, False)],  # Change fuel strategy: neutral reward
     },
-    1: {  # Score increased, no foul called
-        1: [(1.0, 3, 1.0, True)],  # Moves to terminal state with foul
-        0: [(1.0, 1, 0.0, False)]  # Stays in the same state
+    1: {  # Slightly worn tires, lower fuel level, still racing
+        0: [(0.8, 1, -0.2, False)],  # Stay out: increased tire wear, lower lap performance
+        1: [(0.2, 2, 0.7, False)],  # Pit for new tires: better performance after pit
+        2: [(0.3, 3, 0.0, False)],  # Change fuel strategy: neutral impact on lap time
     },
-    2: {  # Score increased with a foul
-        1: [(1.0, 3, 1.0, True)],  # Guaranteed transition to terminal state
-        0: [(1.0, 2, 0.0, False)]  # Stays in the same state
+    2: {  # After a pit stop, fresh tires, better lap time
+        0: [(0.6, 4, 0.8, False)],  # Stay out: new tires yield improved lap time
+        1: [(0.1, 2, 0.0, False)],  # Pit again: low reward as tires are fresh
+        2: [(0.2, 3, 0.0, False)],  # Change fuel strategy: moderate effect on performance
     },
-    3: {  # Terminal state
-        1: [(1.0, 3, 1.0, True)],
-        0: [(1.0, 3, 0.0, True)]
+    3: {  # Optimal pit stop and fuel strategy achieved, terminal state
+        0: [(1.0, 4, 1.0, True)],  # Terminal state: race performance maximized
+        1: [(1.0, 4, 1.0, True)],  # No further action, terminal state
+        2: [(1.0, 4, 1.0, True)],  # No further action, terminal state
     }
 }
 
@@ -83,7 +94,8 @@ mdp = {
 
 ## OUTPUT:
 
-![image](https://github.com/user-attachments/assets/d26e9339-886c-457d-9d87-9d3c4c8a5779)
+![image](https://github.com/user-attachments/assets/f7fc3cfb-6b90-4ba7-a957-dad7ab389e1b)
+
 
 
 ## RESULT:
