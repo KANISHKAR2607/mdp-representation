@@ -8,7 +8,7 @@
 
 ## AIM:
 
-To represent any one real-world problem in MDP form.
+To represent pit stop strategies in Formula 1 racing problem in MDP form.
 
 ## PROBLEM STATEMENT:
 
@@ -56,48 +56,44 @@ Pit for new tires (switch from medium to hard tires).
 
 ### Graphical Representation
 
-
-![1](https://github.com/user-attachments/assets/d584df26-c19d-4e92-8106-5a0a3fcb0845)
-
-
-
+![1](https://github.com/user-attachments/assets/ebb1872f-511e-4bc3-b5bf-97e01bef4c2a)
 
 
 ## PYTHON REPRESENTATION:
 ```py
 
 mdp = {
-    0: {  # Initial state with specific lap time, tire wear, and fuel level
-        0: [(0.7, 1, -0.1, False)],  # Stay out: slight negative reward for tire wear
-        1: [(0.3, 2, 0.5, False)],  # Pit for new tires: positive reward for improving lap time
-        2: [(0.2, 3, 0.0, False)],  # Change fuel strategy: neutral reward
+    0: {  # Initial state
+        0: [(0.5, 1, -0.1, False)],  # Stay out
+        1: [(0.4, 2, 0.5, False)],  # Pit for new tires
+        2: [(0.1, 3, 0.0, False)],  # Change fuel strategy
     },
-    1: {  # Slightly worn tires, lower fuel level, still racing
-        0: [(0.8, 1, -0.2, False)],  # Stay out: increased tire wear, lower lap performance
-        1: [(0.2, 2, 0.7, False)],  # Pit for new tires: better performance after pit
-        2: [(0.3, 3, 0.0, False)],  # Change fuel strategy: neutral impact on lap time
+    1: {  # Slightly worn tires
+        0: [(0.6, 1, -0.2, False)],  # Stay out
+        1: [(0.3, 2, 0.7, False)],  # Pit for new tires
+        2: [(0.1, 3, 0.0, False)],  # Change fuel strategy
     },
-    2: {  # After a pit stop, fresh tires, better lap time
-        0: [(0.6, 4, 0.8, False)],  # Stay out: new tires yield improved lap time
-        1: [(0.1, 2, 0.0, False)],  # Pit again: low reward as tires are fresh
-        2: [(0.2, 3, 0.0, False)],  # Change fuel strategy: moderate effect on performance
+    2: {  # After a pit stop
+        0: [(0.5, 4, 0.8, False)],  # Stay out
+        1: [(0.3, 2, 0.0, False)],  # Pit again
+        2: [(0.2, 3, 0.0, False)],  # Change fuel strategy
     },
-    3: {  # Optimal pit stop and fuel strategy achieved, terminal state
-        0: [(1.0, 4, 1.0, True)],  # Terminal state: race performance maximized
-        1: [(1.0, 4, 1.0, True)],  # No further action, terminal state
-        2: [(1.0, 4, 1.0, True)],  # No further action, terminal state
+    3: {  # Terminal state
+        0: [(1.0, 4, 1.0, True)],  # Terminal state
+        1: [(1.0, 4, 1.0, True)],  # No further action
+        2: [(1.0, 4, 1.0, True)],  # No further action
     }
 }
+
 
 ```
 
 
 ## OUTPUT:
 
-![image](https://github.com/user-attachments/assets/f7fc3cfb-6b90-4ba7-a957-dad7ab389e1b)
-
+![image](https://github.com/user-attachments/assets/5d74bd1c-fd69-4aad-b544-881697b9e34d)
 
 
 ## RESULT:
 
-Thus the given real world problem is successfully represented in a MDP form.
+Thus the pit stop strategies in Formula 1 racing problem is successfully represented in a MDP form.
